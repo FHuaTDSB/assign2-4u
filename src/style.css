@@ -1,10 +1,15 @@
 * {
   margin: 0px;
+  font-family: "Roboto Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
 }
 
 h1 {
   justify-self: center;
   color: rgb(175, 150, 0);
+  margin: 25px;
 }
 
 input {
@@ -12,6 +17,15 @@ input {
   height: 100%;
   border-radius: 0%;
   border-color: rgb(175, 150, 0);
+}
+
+label {
+  margin-bottom: 10px;
+  color: rgb(125, 100, 0);
+}
+
+.header {
+  background-color: rgb(255, 225, 150);
 }
 
 .form-container {
@@ -25,7 +39,8 @@ input {
 .form-child {
   display: flex;
   flex-direction: column;
-  align-items: center;;
+  align-items: center;
+  ;
 }
 
 .form-field {
@@ -34,7 +49,20 @@ input {
 }
 
 .form-submit {
-  color: white;
+  color: rgb(75, 70, 0);
   background-color: rgb(210, 180, 0);
   border-width: 5px;
+  font-size: 16px;
+}
+
+.form-submit:hover {
+  color: white;
+  background-color: rgb(200, 170, 0);
+}
+
+.form-submit:active {
+  background-color: rgb(175, 150, 0);
+  border-color: rgb(210, 180, 0);
+  color: white;
+  border-style: inset;
 }
