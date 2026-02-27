@@ -14,7 +14,7 @@ const trigSolve = (a: number, b: number, p: number, q: number): [number, number,
 
 const cardano = (a: number, b: number, q: number, discriminant: number): number => {
     const x: number = Math.cbrt(-q / 2 + discriminant) + Math.cbrt(-q / 2 - discriminant) - b / (3 * a);
-    return fixDecimal(x);
+    return x;
 }
 
 cubic.addEventListener("submit", (event) => {
@@ -37,6 +37,11 @@ cubic.addEventListener("submit", (event) => {
             for (let i = 0; i < 3; i++) {
                 solutions[i] = cardano(a, b, q, discriminant);
             }
+        } else {
+            for (let i = 0; i < 2; i++) {
+                solutions[i] = Math.cbrt(q / 2) - b / (3 * a);
+            }
+            solutions[2] = cardano(a, b, q, discriminant);
         }
     }
     console.log(solutions)
