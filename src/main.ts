@@ -12,6 +12,11 @@ const trigSolve = (a: number, b: number, p: number, q: number): number[] => {
     return [fixDecimal(x1), fixDecimal(x2), fixDecimal(x3)];
 }
 
+const cardano = (a: number, b: number, q: number, discriminant: number): number => {
+    const x: number = Math.cbrt(-q / 2 + discriminant) + Math.cbrt(-q / 2 - discriminant) - b / (3 * a);
+    return fixDecimal(x);
+}
+
 cubic.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(cubic);
@@ -23,7 +28,10 @@ cubic.addEventListener("submit", (event) => {
     const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
     const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3));
     if (discriminant < 0) {
-        const solutions: number[] = trigSolve(a, b, p, q)
-        console.log(solutions);
+        const solutions: number[] = trigSolve(a, b, p, q);
+        console.log(solutions)
+    } else if (discriminant > 0) {
+        const solutions: [number, string, string] = [cardano(a, b, q, discriminant), "Complex", "Complex"];
+        console.log(solutions)
     }
 })
