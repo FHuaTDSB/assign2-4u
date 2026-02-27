@@ -1,24 +1,29 @@
 const cubic = document.getElementById("cubic") as HTMLFormElement;
 
+const fixDecimal = (value: number): number => {
+    return parseFloat(String(value.toFixed(12)));
+}
+
 const trigSolve = (a: number, b: number, p: number, q: number): number[] => {
-    const theta = Number(Math.acos(-q / (2 * Math.sqrt(-((p / 3) ** 3)))) / 3);
-    const x1 = Number(2 * Math.sqrt(-p / 3) * Math.cos(theta) - b / (3 * a));
-    const x2 = Number(2 * Math.sqrt(-p / 3) * Math.cos(theta + 2 * Math.PI / 3) - b / (3 * a));
-    const x3 = Number(2 * Math.sqrt(-p / 3) * Math.cos(theta + 4 * Math.PI / 3) - b / (3 * a));
-    return [x1, x2, x3]
+    const theta: number = Math.acos(-q / (2 * Math.sqrt(-((p / 3) ** 3)))) / 3;
+    const x1: number = 2 * Math.sqrt(-p / 3) * Math.cos(theta) - b / (3 * a);
+    const x2: number = 2 * Math.sqrt(-p / 3) * Math.cos(theta + 2 * Math.PI / 3) - b / (3 * a);
+    const x3: number = 2 * Math.sqrt(-p / 3) * Math.cos(theta + 4 * Math.PI / 3) - b / (3 * a);
+    return [fixDecimal(x1), fixDecimal(x2), fixDecimal(x3)];
 }
 
 cubic.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(cubic);
-    const a = Number(formData.get("a"));
-    const b = Number(formData.get("b"));
-    const c = Number(formData.get("c"));
-    const d = Number(formData.get("d"));
-    const p = Number((3 * a * c - b ** 2) / (3 * a ** 2));
-    const q = Number((27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3));
-    const discriminant = Number(((q / 2) ** 2 * 100 + (p / 3) ** 3 * 100) / 100);
+    const a: number = Number(formData.get("a"));
+    const b: number = Number(formData.get("b"));
+    const c: number = Number(formData.get("c"));
+    const d: number = Number(formData.get("d"));
+    const p: number = (3 * a * c - b ** 2) / (3 * a ** 2);
+    const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
+    const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3));
     if (discriminant < 0) {
-        console.log(trigSolve(a, b, p, q));
+        const solutions: number[] = trigSolve(a, b, p, q)
+        console.log(solutions);
     }
 })
