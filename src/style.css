@@ -6,10 +6,28 @@
   font-style: normal;
 }
 
+body {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-row-gap: 25px;
+}
+
 h1 {
   justify-self: center;
   color: rgb(175, 150, 0);
   margin: 25px;
+  background-color: rgb(255, 225, 150);
+  width: 100%;
+  text-align: center;
+}
+
+h3 {
+  justify-self: center;
+  margin: 25px;
+  color: rgb(200, 170, 0);
+  background-color: rgb(255, 235, 175);
+  width: 100%;
+  text-align: center;
 }
 
 input {
@@ -24,16 +42,12 @@ label {
   color: rgb(125, 100, 0);
 }
 
-.header {
-  background-color: rgb(255, 225, 150);
-}
-
 .form-container {
   display: grid;
   grid-template-columns: auto auto auto auto auto;
   grid-column-gap: 25px;
   justify-self: center;
-  height: 50px;
+  height: 57px;
 }
 
 .form-child {
@@ -65,4 +79,12 @@ label {
   border-color: rgb(210, 180, 0);
   color: white;
   border-style: inset;
+}
+
+.coefficient {
+  display: inline;
+}
+
+#equation {
+  display: none;
 }

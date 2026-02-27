@@ -13,9 +13,7 @@
 </head>
 
 <body>
-  <div class="header">
-    <h1>Cubic Solver</h1>
-  </div>
+  <h1>Cubic Solver</h1>
   <form class="form-container" id="cubic">
     <div class="form-child">
       <label for="a">a value:</label>
@@ -35,6 +33,10 @@
     </div>
     <input type="submit" value="Solve!" class="form-submit">
   </form>
+  <h3 id="equation">
+    <p class="coefficient" id="coeff-a">1</p>x<sup>3</sup> + <p class="coefficient" id="coeff-b">1</p>x<sup>2</sup> + <p
+      class="coefficient" id="coeff-c">1</p>x + <p class="coefficient" id="coeff-d">1</p> = 0
+  </h3>
   <script defer src="src/main.ts"></script>
 </body>
 
