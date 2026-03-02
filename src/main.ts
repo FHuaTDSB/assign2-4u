@@ -24,9 +24,11 @@ cubic.addEventListener("submit", (event) => {
     const b: number = Number(formData.get("b"));
     const c: number = Number(formData.get("c"));
     const d: number = Number(formData.get("d"));
+
     const p: number = (3 * a * c - b ** 2) / (3 * a ** 2);
     const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
     const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3));
+
     let solutions: [number, number | string, number | string] = [0, 0, 0]
     if (discriminant < 0) {
         solutions = trigSolve(a, b, p, q);
@@ -44,5 +46,18 @@ cubic.addEventListener("submit", (event) => {
             solutions[2] = cardano(a, b, q, discriminant);
         }
     }
-    console.log(solutions)
+
+    const equation = document.getElementById("equation") as HTMLElement;
+    const coefficients: number[] = [a, b, c];
+    const coefficientDisplay = document.getElementsByClassName("coefficient") as HTMLCollectionOf<HTMLElement>;
+    
+    equation.style.display = "block";
+    for (let i = 0; i < 3; i++) {
+        if (coefficients[i] == 1) {
+            coefficientDisplay[i].innerText = ""
+        } else {
+            coefficientDisplay[i].innerText = String(coefficients[i])
+        }
+    }
+    coefficientDisplay[3].innerText = String(d)
 })
