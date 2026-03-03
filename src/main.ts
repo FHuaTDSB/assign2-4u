@@ -50,9 +50,14 @@ cubic.addEventListener("submit", (event) => {
     const equation = document.getElementById("equation") as HTMLElement;
     const coefficients: number[] = [a, b, c];
     const coefficientDisplay = document.getElementsByClassName("coefficient") as HTMLCollectionOf<HTMLElement>;
-    
+    const tableValues = document.getElementsByClassName("table-value") as HTMLCollectionOf<HTMLElement>;
+
     equation.style.display = "block";
+    tableValues[0].innerText = String(p)
+    tableValues[1].innerText = String(q)
+    tableValues[2].innerText = String(discriminant)
     for (let i = 0; i < 3; i++) {
+        tableValues[i+3].innerText = String(solutions[i])
         if (coefficients[i] == 1) {
             coefficientDisplay[i].innerText = ""
         } else {

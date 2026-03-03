@@ -24,6 +24,7 @@ h1 {
 h3 {
   justify-self: center;
   margin: 25px;
+  margin-bottom: 0%;
   color: rgb(200, 170, 0);
   background-color: rgb(255, 235, 175);
   width: 100%;
@@ -40,6 +41,27 @@ input {
 label {
   margin-bottom: 10px;
   color: rgb(125, 100, 0);
+}
+
+table {
+  width: 30%;
+  background-color: rgb(175, 150, 0);
+  margin: 25px;
+}
+
+th {
+  background-color: rgb(255, 235, 175);
+  padding: 5px;
+}
+
+td {
+  background-color: white;
+  text-align: center;
+  padding: 5px;
+}
+
+.table-subtitle {
+  width: 50%;
 }
 
 .form-container {
