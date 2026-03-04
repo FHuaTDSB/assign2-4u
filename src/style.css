@@ -44,7 +44,7 @@ label {
 }
 
 table {
-  width: 30%;
+  width: 100%;
   background-color: rgb(175, 150, 0);
   margin: 25px;
 }
@@ -58,6 +58,14 @@ td {
   background-color: white;
   text-align: center;
   padding: 5px;
+}
+
+canvas {
+  border-color: rgb(175, 150, 0);
+  border-width: 2px;
+  border-style: solid;
+  justify-self: center;
+  margin: 25px;
 }
 
 .table-subtitle {
@@ -109,4 +117,9 @@ td {
 
 #equation {
   display: none;
+}
+
+.visual-solution {
+  display: grid;
+  grid-template-columns: 30% 70%;
 }
