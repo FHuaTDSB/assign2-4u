@@ -8,7 +8,10 @@ const fixDecimal = (value: number, fix: number): number => {
 
 const orderArray = (array: [number, number | string, number | string]): [number, number | string, number | string] => {
     let orderedArray: [number, number | string, number | string] = [0, 0, 0]
-    
+    if (typeof array[1] === "string" || typeof array[2] === "string") {
+        orderedArray = array
+    } else {
+    }
     return orderedArray
 }
 
