@@ -6,15 +6,6 @@ const fixDecimal = (value: number, fix: number): number => {
     return parseFloat(value.toFixed(fix));
 }
 
-const orderArray = (array: [number, number | string, number | string]): [number, number | string, number | string] => {
-    let orderedArray: [number, number | string, number | string] = [0, 0, 0]
-    if (typeof array[1] === "string" || typeof array[2] === "string") {
-        orderedArray = array
-    } else {
-    }
-    return orderedArray
-}
-
 const trigSolve = (a: number, b: number, p: number, q: number): [number, number, number] => {
     const theta: number = Math.acos(-q / (2 * Math.sqrt(-((p / 3) ** 3)))) / 3;
     const x1: number = 2 * Math.sqrt(-p / 3) * Math.cos(theta) - b / (3 * a);
@@ -57,26 +48,10 @@ const findStartAndEndPoint = (a: number, b: number, c: number, d: number): numbe
     let solutions: [number, number | string, number | string] = [0, 0, 0]
     let startPoint: number = 0
     let endPoint: number = 0
-    if (a > 0) {
-        solutions = solveCubic(a, b, c, d + 15)
-    } else {
-        solutions = solveCubic(a, b, c, d - 15)
-    }
-
-    if (a > 0) {
-        solutions = solveCubic(a, b, c, d - 15)
-    } else {
-        solutions = solveCubic(a, b, c, d + 15)
-    }
-    if (typeof solutions[1] === "string" || typeof solutions[2] === "string") {
-        endPoint = solutions[0]
-    } else if (solutions[0] > solutions[1] && solutions[0] > solutions[2]) {
-        endPoint = solutions[0]
-    } else if (solutions[1] > solutions[2]) {
-        endPoint = solutions[1]
-    } else {
-        endPoint = solutions[2]
-    }
+    solutions = (a > 0) ? solveCubic(a, b, c, d + 15) : solutions = solveCubic(a, b, c, d - 15)
+    startPoint = (typeof solutions[1] === "string") ? solutions[0] : Math.min.apply(null, solutions as number[]);
+    solutions = (a > 0) ? solveCubic(a, b, c, d - 15) : solutions = solveCubic(a, b, c, d + 15)
+    endPoint = (typeof solutions[1] === "string") ? solutions[0] : Math.max.apply(null, solutions as number[])
 
     return [startPoint, endPoint]
 }
@@ -94,9 +69,6 @@ cubic.addEventListener("submit", (event) => {
     const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3, 12));
 
     let solutions: [number, number | string, number | string] = solveCubic(a, b, c, d);
-
-    console.log(solutions)
-    console.log(orderArray(solutions))
 
     const equation = document.getElementById("equation") as HTMLElement;
     const coefficients: number[] = [a, b, c];
@@ -129,16 +101,8 @@ cubic.addEventListener("submit", (event) => {
 
     ctx.beginPath();
     for (let i = 0; i < 3; i++) {
-        if (typeof tableValues[i + 3] === "number") {
-            tableValues[i + 3].innerText = `(${String(solutions[i])}, 0)`;
-        } else {
-            tableValues[i + 3].innerText = String(solutions[i]);
-        }
-        if (coefficients[i] == 1) {
-            coefficientDisplay[i].innerText = "";
-        } else {
-            coefficientDisplay[i].innerText = String(coefficients[i]);
-        }
+        tableValues[i + 3].innerText = (typeof tableValues[i + 3] === "number") ? `(${String(solutions[i])}, 0)` : String(solutions[i]);
+        coefficientDisplay[i].innerText = (coefficients[i] == 1) ? "" : String(coefficients[i]);
         if (typeof solutions[i] === "number") {
             ctx.arc(Number(solutions[i]) * 20 + 300, 300, 3, 0, 2 * Math.PI);
         }
