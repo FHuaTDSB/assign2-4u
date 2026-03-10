@@ -27,75 +27,89 @@ cubic.addEventListener("submit", (event) => {
     const c: number = Number(formData.get("c"));
     const d: number = Number(formData.get("d"));
 
-    const p: number = (3 * a * c - b ** 2) / (3 * a ** 2);
-    const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
-    const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3, 12));
-
-    let solutions: [number, number | string, number | string] = [0, 0, 0]
-    if (discriminant < 0) {
-        solutions = trigSolve(a, b, p, q);
-    } else if (discriminant > 0) {
-        solutions = [cardano(a, b, q, discriminant), "Complex", "Complex"];
+    if (a == 0) {
+        const error = document.getElementById("error") as HTMLElement;
+        const equation = document.getElementById("equation") as HTMLElement;
+        error.style.display = "block";
+        equation.style.display = "none";
     } else {
-        if (p == 0 && q == 0) {
-            for (let i = 0; i < 3; i++) {
-                solutions[i] = cardano(a, b, q, discriminant);
-            }
+        const error = document.getElementById("error") as HTMLElement;
+        error.style.display = "none";
+
+        const p: number = (3 * a * c - b ** 2) / (3 * a ** 2);
+        const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
+        const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3, 12));
+
+        let solutions: [number, number | string, number | string] = [0, 0, 0]
+        if (discriminant < 0) {
+            solutions = trigSolve(a, b, p, q);
+        } else if (discriminant > 0) {
+            solutions = [cardano(a, b, q, discriminant), "Complex", "Complex"];
         } else {
-            for (let i = 0; i < 2; i++) {
-                solutions[i] = Math.cbrt(q / 2) - b / (3 * a);
+            if (p == 0 && q == 0) {
+                for (let i = 0; i < 3; i++) {
+                    solutions[i] = cardano(a, b, q, discriminant);
+                }
+            } else {
+                for (let i = 0; i < 2; i++) {
+                    solutions[i] = Math.cbrt(q / 2) - b / (3 * a);
+                }
+                solutions[2] = cardano(a, b, q, discriminant);
             }
-            solutions[2] = cardano(a, b, q, discriminant);
         }
-    }
 
-    const equation = document.getElementById("equation") as HTMLElement;
-    const coefficients: number[] = [a, b, c];
-    const coefficientDisplay = document.getElementsByClassName("coefficient") as HTMLCollectionOf<HTMLElement>;
-    const tableValues = document.getElementsByClassName("table-value") as HTMLCollectionOf<HTMLElement>;
+        const equation = document.getElementById("equation") as HTMLElement;
+        const coefficients: number[] = [a, b, c, d];
+        const coefficientDisplay = document.getElementsByClassName("coefficient") as HTMLCollectionOf<HTMLElement>;
+        const operatorDisplay = document.getElementsByClassName("operator") as HTMLCollectionOf<HTMLElement>;
+        const termDisplay = document.getElementsByClassName("term") as HTMLCollectionOf<HTMLElement>;
+        const tableValues = document.getElementsByClassName("table-value") as HTMLCollectionOf<HTMLElement>;
 
-    equation.style.display = "block";
-    tableValues[0].innerText = String(p);
-    tableValues[1].innerText = String(q);
-    tableValues[2].innerText = String(discriminant);
-    
-    ctx.clearRect(0, 0, 600, 600)
-    ctx.beginPath();
-    for (let i = 0; i < 30; i++) {
-        ctx.moveTo(i * 20, 0);
-        ctx.lineTo(i * 20, 600);
-        ctx.moveTo(0, i * 20);
-        ctx.lineTo(600, i * 20);
-    }
-    ctx.strokeStyle = "rgb(200, 200, 200)"
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.moveTo(300, 0);
-    ctx.lineTo(300, 600);
-    ctx.moveTo(0, 300);
-    ctx.lineTo(600, 300);
-    ctx.strokeStyle = "black"
-    ctx.stroke();
+        equation.style.display = "block";
+        tableValues[0].innerText = String(fixDecimal(p, 3));
+        tableValues[1].innerText = String(fixDecimal(q, 3));
+        tableValues[2].innerText = String(fixDecimal(discriminant, 3));
 
-    ctx.beginPath();
-    ctx.moveTo(0, (a * (-15) ** 3 + b * (-15) ** 2 + c * (-15) + d + 15) * 20);
-    for (let i = -15; i < 15; i += 0.1) {
-        ctx.lineTo((i + 15) * 20, (a * i ** 3 + b * i ** 2 + c * i + d + 15) * 20);
-    }
-    ctx.strokeStyle = "red"
-    ctx.lineWidth = 2
-    ctx.stroke();
-
-    ctx.beginPath();
-    for (let i = 0; i < 3; i++) {
-        tableValues[i + 3].innerText = (typeof tableValues[i + 3] === "number") ? `(${String(solutions[i])}, 0)` : String(solutions[i]);
-        coefficientDisplay[i].innerText = (coefficients[i] == 1) ? "" : String(coefficients[i]);
-        if (typeof solutions[i] === "number") {
-            ctx.arc(Number(solutions[i]) * 20 + 300, 300, 3, 0, 2 * Math.PI);
+        ctx.clearRect(0, 0, 600, 600);
+        ctx.beginPath();
+        for (let i = 0; i < 30; i++) {
+            ctx.moveTo(i * 20, 0);
+            ctx.lineTo(i * 20, 600);
+            ctx.moveTo(0, i * 20);
+            ctx.lineTo(600, i * 20);
         }
+        ctx.lineWidth = 1
+        ctx.strokeStyle = "rgb(200, 200, 200)"
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(300, 0);
+        ctx.lineTo(300, 600);
+        ctx.moveTo(0, 300);
+        ctx.lineTo(600, 300);
+        ctx.strokeStyle = "black"
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, (a * (-15) ** 3 + b * (-15) ** 2 + c * (-15) + d + 15) * 20);
+        for (let i = -15; i < 15; i += 0.1) {
+            ctx.lineTo((i + 15) * 20, (a * i ** 3 + b * i ** 2 + c * i + d + 15) * 20);
+        }
+        ctx.strokeStyle = "red"
+        ctx.lineWidth = 2
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (let i = 0; i < 3; i++) {
+            tableValues[i + 3].innerText = (typeof tableValues[i + 3] === "number") ? `(${String(solutions[i])}, 0)` : String(solutions[i]);
+            coefficientDisplay[i].innerText = (coefficients[i] == 1) ? "" : String(Math.abs(coefficients[i]));
+            operatorDisplay[i].innerText = (coefficients[i + 1] > 0) ? " + " : " - ";
+            termDisplay[i].style.display = (coefficients[i + 1] == 0) ? "none" : "inline";
+            if (typeof solutions[i] === "number") {
+                ctx.arc(Number(solutions[i]) * 20 + 300, 300, 3, 0, 2 * Math.PI);
+            }
+        }
+        coefficientDisplay[3].innerText = String(Math.abs(d));
+        ctx.fillStyle = "blue";
+        ctx.fill();
     }
-    coefficientDisplay[3].innerText = String(d);
-    ctx.fillStyle = "blue";
-    ctx.fill();
 })

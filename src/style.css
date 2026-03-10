@@ -4,6 +4,7 @@
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
+  border: 0px;
 }
 
 body {
@@ -29,6 +30,14 @@ h3 {
   background-color: rgb(255, 235, 175);
   width: 100%;
   text-align: center;
+}
+
+h3 > div {
+  display: inline;
+}
+
+h3 > div > div {
+  display: inline;
 }
 
 input {
@@ -111,10 +120,6 @@ canvas {
   border-style: inset;
 }
 
-.coefficient {
-  display: inline;
-}
-
 #equation {
   display: none;
 }
@@ -122,4 +127,8 @@ canvas {
 .visual-solution {
   display: grid;
   grid-template-columns: 30% 70%;
+}
+
+#error {
+  display: none;
 }
