@@ -19,7 +19,14 @@ const cardano = (a: number, b: number, q: number, discriminant: number): number 
     return fixDecimal(x, 2);
 }
 
-const solveCubic = (a: number, b: number, c: number, d: number): [number, number | string, number | string] => {
+cubic.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(cubic);
+    const a: number = Number(formData.get("a"));
+    const b: number = Number(formData.get("b"));
+    const c: number = Number(formData.get("c"));
+    const d: number = Number(formData.get("d"));
+
     const p: number = (3 * a * c - b ** 2) / (3 * a ** 2);
     const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
     const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3, 12));
@@ -41,34 +48,6 @@ const solveCubic = (a: number, b: number, c: number, d: number): [number, number
             solutions[2] = cardano(a, b, q, discriminant);
         }
     }
-    return solutions
-}
-
-const findStartAndEndPoint = (a: number, b: number, c: number, d: number): number[] => {
-    let solutions: [number, number | string, number | string] = [0, 0, 0]
-    let startPoint: number = 0
-    let endPoint: number = 0
-    solutions = (a > 0) ? solveCubic(a, b, c, d + 15) : solutions = solveCubic(a, b, c, d - 15)
-    startPoint = (typeof solutions[1] === "string") ? solutions[0] : Math.min.apply(null, solutions as number[]);
-    solutions = (a > 0) ? solveCubic(a, b, c, d - 15) : solutions = solveCubic(a, b, c, d + 15)
-    endPoint = (typeof solutions[1] === "string") ? solutions[0] : Math.max.apply(null, solutions as number[])
-
-    return [startPoint, endPoint]
-}
-
-cubic.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const formData = new FormData(cubic);
-    const a: number = Number(formData.get("a"));
-    const b: number = Number(formData.get("b"));
-    const c: number = Number(formData.get("c"));
-    const d: number = Number(formData.get("d"));
-
-    const p: number = (3 * a * c - b ** 2) / (3 * a ** 2);
-    const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
-    const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3, 12));
-
-    let solutions: [number, number | string, number | string] = solveCubic(a, b, c, d);
 
     const equation = document.getElementById("equation") as HTMLElement;
     const coefficients: number[] = [a, b, c];
@@ -79,6 +58,7 @@ cubic.addEventListener("submit", (event) => {
     tableValues[0].innerText = String(p);
     tableValues[1].innerText = String(q);
     tableValues[2].innerText = String(discriminant);
+    
     ctx.clearRect(0, 0, 600, 600)
     ctx.beginPath();
     for (let i = 0; i < 30; i++) {
@@ -89,6 +69,7 @@ cubic.addEventListener("submit", (event) => {
     }
     ctx.strokeStyle = "rgb(200, 200, 200)"
     ctx.stroke();
+    
     ctx.beginPath();
     ctx.moveTo(300, 0);
     ctx.lineTo(300, 600);
@@ -97,7 +78,14 @@ cubic.addEventListener("submit", (event) => {
     ctx.strokeStyle = "black"
     ctx.stroke();
 
-    console.log(findStartAndEndPoint(a, b, c, d))
+    ctx.beginPath();
+    ctx.moveTo(0, (a * (-15) ** 3 + b * (-15) ** 2 + c * (-15) + d + 15) * 20);
+    for (let i = -15; i < 15; i += 0.1) {
+        ctx.lineTo((i + 15) * 20, (a * i ** 3 + b * i ** 2 + c * i + d + 15) * 20);
+    }
+    ctx.strokeStyle = "red"
+    ctx.lineWidth = 2
+    ctx.stroke();
 
     ctx.beginPath();
     for (let i = 0; i < 3; i++) {
