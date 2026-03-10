@@ -33,19 +33,12 @@ cubic.addEventListener("submit", (event) => {
         error.style.display = "block";
         equation.style.display = "none";
     } else {
-        const error = document.getElementById("error") as HTMLElement;
-        error.style.display = "none";
-
         const p: number = (3 * a * c - b ** 2) / (3 * a ** 2);
         const q: number = (27 * a ** 2 * d - 9 * a * b * c + 2 * b ** 3) / (27 * a ** 3);
         const discriminant = Number(fixDecimal((q / 2) ** 2 + (p / 3) ** 3, 12));
 
         let solutions: [number, number | string, number | string] = [0, 0, 0]
-        if (discriminant < 0) {
-            solutions = trigSolve(a, b, p, q);
-        } else if (discriminant > 0) {
-            solutions = [cardano(a, b, q, discriminant), "Complex", "Complex"];
-        } else {
+        if (discriminant == 0) {
             if (p == 0 && q == 0) {
                 for (let i = 0; i < 3; i++) {
                     solutions[i] = cardano(a, b, q, discriminant);
@@ -56,16 +49,19 @@ cubic.addEventListener("submit", (event) => {
                 }
                 solutions[2] = cardano(a, b, q, discriminant);
             }
+        } else {
+            solutions = (discriminant < 0) ? trigSolve(a, b, p, q) : [cardano(a, b, q, discriminant), "Complex", "Complex"];
         }
 
         const equation = document.getElementById("equation") as HTMLElement;
+        const error = document.getElementById("error") as HTMLElement;
         const coefficients: number[] = [a, b, c, d];
         const coefficientDisplay = document.getElementsByClassName("coefficient") as HTMLCollectionOf<HTMLElement>;
         const operatorDisplay = document.getElementsByClassName("operator") as HTMLCollectionOf<HTMLElement>;
         const termDisplay = document.getElementsByClassName("term") as HTMLCollectionOf<HTMLElement>;
         const tableValues = document.getElementsByClassName("table-value") as HTMLCollectionOf<HTMLElement>;
-
         equation.style.display = "block";
+        error.style.display = "none";
         tableValues[0].innerText = String(fixDecimal(p, 3));
         tableValues[1].innerText = String(fixDecimal(q, 3));
         tableValues[2].innerText = String(fixDecimal(discriminant, 3));
@@ -81,7 +77,6 @@ cubic.addEventListener("submit", (event) => {
         ctx.lineWidth = 1
         ctx.strokeStyle = "rgb(200, 200, 200)"
         ctx.stroke();
-
         ctx.beginPath();
         ctx.moveTo(300, 0);
         ctx.lineTo(300, 600);
@@ -97,11 +92,10 @@ cubic.addEventListener("submit", (event) => {
         ctx.strokeStyle = "red"
         ctx.lineWidth = 2
         ctx.stroke();
-
         ctx.beginPath();
         for (let i = 0; i < 3; i++) {
             tableValues[i + 3].innerText = (typeof tableValues[i + 3] === "number") ? `(${String(solutions[i])}, 0)` : String(solutions[i]);
-            coefficientDisplay[i].innerText = (coefficients[i] == 1) ? "" : String(Math.abs(coefficients[i]));
+            coefficientDisplay[i].innerText = (coefficients[i] == 1) ? "" : (i == 0) ? String(a) : String(Math.abs(coefficients[i]));
             operatorDisplay[i].innerText = (coefficients[i + 1] > 0) ? " + " : " - ";
             termDisplay[i].style.display = (coefficients[i + 1] == 0) ? "none" : "inline";
             if (typeof solutions[i] === "number") {
