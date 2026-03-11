@@ -95,7 +95,7 @@ cubic.addEventListener("submit", (event) => {
         ctx.beginPath();
         for (let i = 0; i < 3; i++) {
             tableValues[i + 3].innerText = (typeof tableValues[i + 3] === "number") ? `(${String(solutions[i])}, 0)` : String(solutions[i]);
-            coefficientDisplay[i].innerText = (coefficients[i] == 1) ? "" : (i == 0) ? String(a) : String(Math.abs(coefficients[i]));
+            coefficientDisplay[i].innerText = (Math.abs(coefficients[i]) == 1) ? "" : (i == 0) ? String(a) : String(Math.abs(coefficients[i]));
             operatorDisplay[i].innerText = (coefficients[i + 1] > 0) ? " + " : " - ";
             termDisplay[i].style.display = (coefficients[i + 1] == 0) ? "none" : "inline";
             if (typeof solutions[i] === "number") {
